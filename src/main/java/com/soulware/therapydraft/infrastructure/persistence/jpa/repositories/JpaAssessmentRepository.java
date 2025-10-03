@@ -1,0 +1,88 @@
+package com.soulware.therapydraft.infrastructure.persistence.jpa.repositories;
+
+import com.soulware.therapydraft.domain.model.aggregates.Assessment;
+import com.soulware.therapydraft.domain.model.valueobjects.ids.AssessmentId;
+import com.soulware.therapydraft.domain.model.valueobjects.ids.PatientId;
+import com.soulware.therapydraft.domain.model.valueobjects.ids.TherapistId;
+import com.soulware.therapydraft.domain.repositories.AssessmentRepository;
+import com.soulware.therapydraft.infrastructure.persistence.jpa.entities.AssessmentEntity;
+import com.soulware.therapydraft.infrastructure.persistence.jpa.mappers.AssessmentMapper;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+@ApplicationScoped
+public class JpaAssessmentRepository implements AssessmentRepository {
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    private final AssessmentMapper mapper;
+
+    @Inject
+    public JpaAssessmentRepository(AssessmentMapper mapper) {
+        this.mapper = mapper;
+    }
+
+    @Override
+    @Transactional(Transactional.TxType.SUPPORTS)
+    public Optional<Assessment> findById(AssessmentId id) {
+        if (id == null) return Optional.empty();
+
+        AssessmentEntity entity = entityManager.find(AssessmentEntity.class, id.value());
+        return Optional.ofNullable(entity)
+                .map(mapper::toDomain);
+    }
+
+    @Override
+    @Transactional(Transactional.TxType.REQUIRED)
+    public void save(Assessment assessment) {
+        if (assessment == null) return;
+
+        AssessmentEntity entity = mapper.toEntity(assessment);
+        entityManager.persist(entity);
+    }
+
+    @Override
+    @Transactional(Transactional.TxType.REQUIRED)
+    public void update(Assessment assessment) {
+        if (assessment == null) return;
+
+        AssessmentEntity entity = mapper.toEntity(assessment);
+        entityManager.merge(entity);
+    }
+
+    @Override
+    @Transactional(Transactional.TxType.SUPPORTS)
+    public List<Assessment> findByPatientId(PatientId patientId) {
+        if (patientId == null) return List.of();
+
+        List<AssessmentEntity> entities = entityManager.createQuery(
+                        "SELECT a FROM AssessmentEntity a WHERE a.patientId = :pid", AssessmentEntity.class)
+                .setParameter("pid", patientId.value())
+                .getResultList();
+
+        return entities.stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    @Transactional(Transactional.TxType.SUPPORTS)
+    public List<Assessment> findByTherapistId(TherapistId therapistId) {
+        if (therapistId == null) return List.of();
+
+        List<AssessmentEntity> entities = entityManager.createQuery(
+                        "SELECT a FROM AssessmentEntity a WHERE a.therapistId = :tid", AssessmentEntity.class)
+                .setParameter("tid", therapistId.value())
+                .getResultList();
+
+        return entities.stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+}
