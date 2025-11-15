@@ -10,7 +10,7 @@ public class AssessmentStatusEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 20, unique = true)
+    @Column(name = "name", nullable = false, length = 30, unique = true)
     private String name;
 
     // Required by JPA

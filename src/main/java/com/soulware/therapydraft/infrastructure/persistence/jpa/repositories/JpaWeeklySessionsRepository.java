@@ -17,14 +17,14 @@ import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class JpaWeeklySessionsRepository implements WeeklySessionsRepository {
+
     @PersistenceContext
     private EntityManager entityManager;
+
     private final WeeklySessionsMapper weeklySessionsMapper;
 
     @Inject
-    public JpaWeeklySessionsRepository (EntityManager entityManager,
-                                        WeeklySessionsMapper weeklySessionsMapper) {
-        this.entityManager = entityManager;
+    public JpaWeeklySessionsRepository (WeeklySessionsMapper weeklySessionsMapper) {
         this.weeklySessionsMapper = weeklySessionsMapper;
     }
 

@@ -25,7 +25,7 @@ public class WeeklySessionsEntity {
     @Column(name = "legal_responsible_id", nullable = false)
     private Long legalResponsibleId;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "weekly_schedule_id")
     private List<SessionEntity> sessions;
 

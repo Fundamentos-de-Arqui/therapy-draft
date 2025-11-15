@@ -8,18 +8,24 @@ import com.soulware.therapydraft.domain.model.valueobjects.ids.PatientId;
 import com.soulware.therapydraft.domain.model.valueobjects.ids.TherapistId;
 import com.soulware.therapydraft.infrastructure.persistence.jpa.entities.AssessmentEntity;
 import com.soulware.therapydraft.shared.domain.model.events.DomainEventPublisher;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.time.ZonedDateTime;
 
-public record AssessmentMapper (
-        AssessmentStatusMapper assessmentStatusMapper,
-        AssessmentTypeMapper assessmentTypeMapper,
-        DomainEventPublisher domainEventPublisher
-){
+@ApplicationScoped
+public class AssessmentMapper{
+    @Inject
+    AssessmentStatusMapper assessmentStatusMapper;
 
     @Inject
-    public AssessmentMapper{}
+    AssessmentTypeMapper assessmentTypeMapper;
+
+    @Inject
+    DomainEventPublisher domainEventPublisher;
+
+    @Inject
+    public AssessmentMapper() {}
 
     public AssessmentEntity toEntity(Assessment domain){
         if(domain == null){

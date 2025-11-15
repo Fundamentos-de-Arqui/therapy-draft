@@ -8,15 +8,21 @@ import com.soulware.therapydraft.domain.model.valueobjects.ids.TherapyPlanId;
 import com.soulware.therapydraft.domain.model.valueobjects.ids.WeeklySessionsId;
 import com.soulware.therapydraft.infrastructure.persistence.jpa.entities.WeeklySessionsEntity;
 import com.soulware.therapydraft.shared.domain.model.events.DomainEventPublisher;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.util.stream.Collectors;
 
-public record WeeklySessionsMapper(    SessionMapper sessionMapper,
-                                      DomainEventPublisher domainEventPublisher) {
+@ApplicationScoped
+public class WeeklySessionsMapper{
+    @Inject
+    SessionMapper sessionMapper;
 
     @Inject
-    public WeeklySessionsMapper{}
+    DomainEventPublisher domainEventPublisher;
+
+    @Inject
+    public WeeklySessionsMapper() {}
 
     public WeeklySessionsEntity toEntity(WeeklySessions domain) {
         if (domain == null){

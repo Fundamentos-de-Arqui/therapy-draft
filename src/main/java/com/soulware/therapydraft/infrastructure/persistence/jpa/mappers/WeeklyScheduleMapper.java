@@ -3,6 +3,7 @@ package com.soulware.therapydraft.infrastructure.persistence.jpa.mappers;
 import com.soulware.therapydraft.domain.model.valueobjects.TimeSlot;
 import com.soulware.therapydraft.domain.model.valueobjects.WeeklySchedule;
 import com.soulware.therapydraft.infrastructure.persistence.jpa.entities.TherapyScheduleEntryEntity;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.time.DayOfWeek;
@@ -10,10 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public record WeeklyScheduleMapper() {
-
+@ApplicationScoped
+public class WeeklyScheduleMapper{
     @Inject
-    public WeeklyScheduleMapper{}
+    public WeeklyScheduleMapper() {}
 
     public WeeklySchedule toDomain(List<TherapyScheduleEntryEntity> entities) {
         if (entities == null) {

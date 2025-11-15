@@ -3,13 +3,17 @@ package com.soulware.therapydraft.infrastructure.persistence.jpa.mappers;
 import com.soulware.therapydraft.domain.model.valueobjects.AssessmentType;
 import com.soulware.therapydraft.infrastructure.persistence.jpa.entities.AssessmentTypeEntity;
 import com.soulware.therapydraft.infrastructure.persistence.jpa.repositories.AssessmentTypeRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
 
-public record AssessmentTypeMapper(AssessmentTypeRepository assessmentTypeRepository) {
+@ApplicationScoped
+public class AssessmentTypeMapper{
+    @Inject
+    AssessmentTypeRepository assessmentTypeRepository;
 
     @Inject
-    public AssessmentTypeMapper{}
+    public AssessmentTypeMapper() {}
 
     public AssessmentType toDomain(AssessmentTypeEntity entity){
         if(entity == null){

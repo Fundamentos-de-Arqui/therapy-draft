@@ -1,17 +1,12 @@
 package com.soulware.therapydraft.domain.model.aggregates;
 
-import com.soulware.therapydraft.domain.model.events.TherapyPlanCancelledEvent;
-import com.soulware.therapydraft.domain.model.events.TherapyPlanCreatedEvent;
 import com.soulware.therapydraft.domain.model.valueobjects.AssessmentStatus;
 import com.soulware.therapydraft.domain.model.valueobjects.AssessmentType;
-import com.soulware.therapydraft.domain.model.valueobjects.TherapyPlanCancelledType;
-import com.soulware.therapydraft.domain.model.valueobjects.TimeSlot;
 import com.soulware.therapydraft.domain.model.valueobjects.ids.*;
 import com.soulware.therapydraft.shared.domain.model.aggregates.BaseAbstractAggregate;
 import com.soulware.therapydraft.shared.domain.model.events.DomainEventPublisher;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
 public class Assessment extends BaseAbstractAggregate {
     private PatientId patientId;
@@ -42,26 +37,11 @@ public class Assessment extends BaseAbstractAggregate {
             DomainEventPublisher eventPublisher,
             PatientId patientId,
             TherapistId therapistId,
-            AssessmentStatus status,
-            ZonedDateTime scheduledAt,
-            TherapyPlanId therapyPlanId,
-            LegalResponsibleId legalResponsibleId,
-            TimeSlot duration,
-            List<WeeklySessionsId> weeklySessionsIds
+            ZonedDateTime scheduledAt
     ) {
-        Assessment assessment = new Assessment(id, eventPublisher, patientId, therapistId,
-                AssessmentType.INITIAL, status, scheduledAt);
 
-        assessment.publishEvent(new TherapyPlanCreatedEvent(
-                therapyPlanId,
-                patientId,
-                legalResponsibleId,
-                id,
-                duration,
-                weeklySessionsIds
-        ));
-
-        return assessment;
+        return new Assessment(id, eventPublisher, patientId, therapistId,
+                AssessmentType.INITIAL, AssessmentStatus.SCHEDULED, scheduledAt);
     }
 
     public static Assessment createReassessment(
@@ -69,21 +49,11 @@ public class Assessment extends BaseAbstractAggregate {
             DomainEventPublisher eventPublisher,
             PatientId patientId,
             TherapistId therapistId,
-            AssessmentStatus status,
-            ZonedDateTime scheduledAt,
-            TherapyPlanId existingPlanId,
-            TherapyPlanCancelledType reason
+            ZonedDateTime scheduledAt
     ) {
-        Assessment assessment = new Assessment(id, eventPublisher, patientId, therapistId,
-                AssessmentType.REASSESSMENT, status, scheduledAt);
 
-        assessment.publishEvent(new TherapyPlanCancelledEvent(
-                existingPlanId,
-                patientId,
-                reason
-        ));
-
-        return assessment;
+        return new Assessment(id, eventPublisher, patientId, therapistId,
+                AssessmentType.REASSESSMENT, AssessmentStatus.SCHEDULED, scheduledAt);
     }
 
     public void changeStatus(AssessmentStatus newStatus) {

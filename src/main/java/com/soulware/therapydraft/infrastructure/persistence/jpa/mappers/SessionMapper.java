@@ -5,12 +5,14 @@ import com.soulware.therapydraft.domain.model.valueobjects.TimeSlot;
 import com.soulware.therapydraft.domain.model.valueobjects.ids.SessionId;
 import com.soulware.therapydraft.domain.model.valueobjects.ids.TherapistId;
 import com.soulware.therapydraft.infrastructure.persistence.jpa.entities.SessionEntity;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-public record SessionMapper(){
+@ApplicationScoped
+public class SessionMapper{
 
     @Inject
-    public SessionMapper(){}
+    public SessionMapper() {}
 
     public Session toDomain(SessionEntity entity){
         if(entity == null){

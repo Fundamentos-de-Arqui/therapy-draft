@@ -19,11 +19,11 @@ public class AssessmentEntity {
     @Column(name = "therapist_id", nullable = false)
     private Long therapistId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "type_id", nullable = false)
     private AssessmentTypeEntity type;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "status_id", nullable = false)
     private AssessmentStatusEntity status;
 

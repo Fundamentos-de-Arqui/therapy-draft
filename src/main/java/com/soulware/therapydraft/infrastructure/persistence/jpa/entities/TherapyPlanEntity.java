@@ -30,7 +30,7 @@ public class TherapyPlanEntity {
     @Column(name = "legal_responsible_id", nullable = false)
     private Long legalResponsibleId;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "therapy_plan_id")
     private List<TherapyScheduleEntryEntity> scheduleEntries;
 

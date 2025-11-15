@@ -6,14 +6,19 @@ import com.soulware.therapydraft.domain.model.valueobjects.WeeklySchedule;
 import com.soulware.therapydraft.domain.model.valueobjects.ids.*;
 import com.soulware.therapydraft.infrastructure.persistence.jpa.entities.TherapyPlanEntity;
 import com.soulware.therapydraft.shared.domain.model.events.DomainEventPublisher;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-public record TherapyPlanMapper(
-        WeeklyScheduleMapper weeklyScheduleMapper,
-        DomainEventPublisher domainEventPublisher
-) {
+@ApplicationScoped
+public class TherapyPlanMapper {
     @Inject
-    public TherapyPlanMapper{}
+    WeeklyScheduleMapper weeklyScheduleMapper;
+
+    @Inject
+    DomainEventPublisher domainEventPublisher;
+
+    @Inject
+    public TherapyPlanMapper() {}
 
     public TherapyPlanEntity toEntity(TherapyPlan domain){
         if (domain == null){
