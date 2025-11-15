@@ -25,8 +25,8 @@ public class AssessmentEntity {
     @JoinColumn(name = "status_id", nullable = false)
     private AssessmentStatusEntity status;
 
-    @Column(name = "scheduled_at", updatable = false, nullable = false)
-    private ZonedDateTime scheduledAt;
+    @Column(name = "scheduled_to", updatable = false, nullable = false)
+    private ZonedDateTime scheduledTo;
 
     @Column(name = "created_at", updatable = false, nullable = false)
     private ZonedDateTime createdAt;
@@ -48,12 +48,12 @@ public class AssessmentEntity {
 
     protected AssessmentEntity() {}
 
-    public AssessmentEntity(Long patientId, Long therapistId, AssessmentTypeEntity type, AssessmentStatusEntity status,  ZonedDateTime scheduledAt) {
+    public AssessmentEntity(Long patientId, Long therapistId, AssessmentTypeEntity type, AssessmentStatusEntity status,  ZonedDateTime scheduledTo) {
         this.patientId = patientId;
         this.therapistId = therapistId;
         this.type = type;
         this.status = status;
-        this.scheduledAt = scheduledAt;
+        this.scheduledTo = scheduledTo;
     }
 
     public Long getId() { return this.id; }
@@ -61,7 +61,7 @@ public class AssessmentEntity {
     public Long getTherapistId() { return this.therapistId; }
     public AssessmentTypeEntity getType() { return this.type; }
     public AssessmentStatusEntity getStatus() { return this.status; }
-    public ZonedDateTime getScheduledAt() { return this.scheduledAt; }
+    public ZonedDateTime getScheduledTo() { return this.scheduledTo; }
     public void setId(Long id) { this.id = id; }
     public void setTherapistId(Long id) { this.therapistId = id; }
     public void setStatus(AssessmentStatusEntity status) { this.status = status; }

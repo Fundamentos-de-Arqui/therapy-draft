@@ -13,7 +13,7 @@ public class Assessment extends BaseAbstractAggregate {
     private TherapistId therapistId;
     private AssessmentType type;
     private AssessmentStatus status;
-    private ZonedDateTime scheduledAt;
+    private ZonedDateTime scheduledTo;
 
     public Assessment(
             AssessmentId id,
@@ -22,14 +22,14 @@ public class Assessment extends BaseAbstractAggregate {
             TherapistId therapistId,
             AssessmentType type,
             AssessmentStatus status,
-            ZonedDateTime scheduledAt
+            ZonedDateTime scheduledTo
     ) {
         super(id, eventPublisher);
         this.patientId = patientId;
         this.therapistId = therapistId;
         this.type = type;
         this.status = status;
-        this.scheduledAt = scheduledAt;
+        this.scheduledTo = scheduledTo;
     }
 
     public static Assessment createInitial(
@@ -74,5 +74,5 @@ public class Assessment extends BaseAbstractAggregate {
     public TherapistId getTherapistId() { return this.therapistId; }
     public AssessmentType getType() { return this.type; }
     public AssessmentStatus getStatus() { return this.status; }
-    public ZonedDateTime getScheduledAt() { return this.scheduledAt; }
+    public ZonedDateTime getScheduledTo() { return this.scheduledTo; }
 }

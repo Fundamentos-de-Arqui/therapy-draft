@@ -133,15 +133,15 @@ public class JpaAssessmentRepository implements AssessmentRepository {
         if (status != null)
             predicates.add(cb.equal(root.get("status").get("name"), status));
 
-        // scheduledAt
+        // scheduledTo
         if (scheduledAt != null)
             predicates.add(cb.equal(
-                    root.get("scheduledAt"),
+                    root.get("scheduledTo"),
                     ZonedDateTime.parse(scheduledAt)
             ));
 
         cq.where(predicates.toArray(new Predicate[0]));
-        cq.orderBy(cb.asc(root.get("scheduledAt")));
+        cq.orderBy(cb.asc(root.get("scheduledTo")));
 
         List<AssessmentEntity> entities = entityManager.createQuery(cq)
                 .setFirstResult(page * size)
@@ -165,7 +165,7 @@ public class JpaAssessmentRepository implements AssessmentRepository {
 
         if (scheduledAt != null)
             countPredicates.add(cb.equal(
-                    countRoot.get("scheduledAt"),
+                    countRoot.get("scheduledTo"),
                     ZonedDateTime.parse(scheduledAt)
             ));
 

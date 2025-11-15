@@ -7,6 +7,6 @@ public record AssessmentResource(
         Long therapistId,
         String type,
         String status,
-        ZonedDateTime scheduledAt
+        ZonedDateTime scheduledTo
 ) {
 }

@@ -37,7 +37,7 @@ public class AssessmentMapper{
                 domain.getTherapistId().value(),
                 assessmentTypeMapper.toEntity(domain.getType()),
                 assessmentStatusMapper.toEntity(domain.getStatus()),
-                domain.getScheduledAt()
+                domain.getScheduledTo()
         );
     }
 
@@ -51,7 +51,7 @@ public class AssessmentMapper{
         TherapistId therapistId = new TherapistId(entity.getTherapistId());
         AssessmentType type = assessmentTypeMapper.toDomain(entity.getType());
         AssessmentStatus status = assessmentStatusMapper.toDomain(entity.getStatus());
-        ZonedDateTime scheduledAt = entity.getScheduledAt();
+        ZonedDateTime scheduledAt = entity.getScheduledTo();
 
         return new Assessment(
                 id,

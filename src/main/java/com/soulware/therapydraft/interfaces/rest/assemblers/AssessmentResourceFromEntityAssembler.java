@@ -10,7 +10,7 @@ public class AssessmentResourceFromEntityAssembler {
                 entity.getTherapistId().value(),
                 entity.getType().name(),
                 entity.getStatus().name(),
-                entity.getScheduledAt()
+                entity.getScheduledTo()
         );
     }
 }

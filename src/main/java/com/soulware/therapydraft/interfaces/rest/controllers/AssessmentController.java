@@ -34,7 +34,7 @@ public class AssessmentController {
         var command = new CreateAssessmentCommand(
                 request.patientId(),
                 request.therapistId(),
-                request.scheduledAt()
+                request.scheduledTo()
         );
 
         var created = commandService.create(command);
