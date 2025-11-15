@@ -6,6 +6,7 @@ import com.soulware.therapydraft.interfaces.rest.resources.AssessmentResource;
 public class AssessmentResourceFromEntityAssembler {
     public static AssessmentResource toResourceFromEntity(Assessment entity){
         return new AssessmentResource(
+                entity.getId().value(),
                 entity.getPatientId().value(),
                 entity.getTherapistId().value(),
                 entity.getType().name(),
