@@ -9,6 +9,7 @@ import com.soulware.therapydraft.domain.model.valueobjects.ids.PatientId;
 import com.soulware.therapydraft.domain.model.valueobjects.ids.TherapistId;
 import com.soulware.therapydraft.domain.repositories.AssessmentRepository;
 import com.soulware.therapydraft.infrastructure.events.cdi.CdiEventPublisher;
+import com.soulware.therapydraft.infrastructure.messaging.senders.AssessmentMessageSender;
 import com.soulware.therapydraft.infrastructure.persistence.jpa.repositories.AssessmentStatusRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -21,7 +22,7 @@ public class AssessmentCommandService {
     AssessmentRepository assessmentRepository;
 
     @Inject
-    AssessmentStatusRepository  assessmentStatusRepository;
+    AssessmentMessageSender  assessmentMessageSender;
 
     @Inject
     CdiEventPublisher  eventPublisher;
@@ -56,6 +57,10 @@ public class AssessmentCommandService {
         assessment.changeStatus(AssessmentStatus.valueOf(command.status()));
 
         assessmentRepository.update(assessment);
+
+        if(assessment.getStatus().name().equals(AssessmentStatus.DONE.name()))
+            assessmentMessageSender.sendAssessmentDone(assessment);
+
         return assessment;
     }
 }
