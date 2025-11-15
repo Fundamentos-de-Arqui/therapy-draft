@@ -10,6 +10,7 @@ import com.soulware.therapydraft.infrastructure.persistence.jpa.mappers.Assessme
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
@@ -52,7 +53,17 @@ public class JpaAssessmentRepository implements AssessmentRepository {
     public void update(Assessment assessment) {
         if (assessment == null) return;
 
-        AssessmentEntity entity = mapper.toEntity(assessment);
+        AssessmentEntity entity = entityManager.find(
+                AssessmentEntity.class,
+                assessment.getId().value()
+        );
+
+        if (entity == null) {
+            throw new EntityNotFoundException("Assessment not found");
+        }
+
+        mapper.updateEntity(entity, assessment);
+
         entityManager.merge(entity);
     }
 

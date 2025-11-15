@@ -1,16 +1,14 @@
 package com.soulware.therapydraft.interfaces.rest.controllers;
 
+import com.soulware.therapydraft.application.commands.ChangeAssessmentStatusCommand;
 import com.soulware.therapydraft.application.commands.CreateAssessmentCommand;
 import com.soulware.therapydraft.application.services.AssessmentCommandService;
 import com.soulware.therapydraft.interfaces.rest.assemblers.AssessmentResourceFromEntityAssembler;
-import com.soulware.therapydraft.interfaces.rest.resources.AssessmentResource;
+import com.soulware.therapydraft.interfaces.rest.resources.ChangeAssessmentStatusResource;
 import com.soulware.therapydraft.interfaces.rest.resources.CreateAssessmentResource;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -37,6 +35,24 @@ public class AssessmentController {
 
         return Response
                 .status(Response.Status.CREATED)
+                .entity(assessment)
+                .build();
+    }
+
+    @PATCH
+    @Path("/{id}/status")
+    public Response updateStatus(@PathParam("id") Long id, ChangeAssessmentStatusResource request) {
+        var command = new ChangeAssessmentStatusCommand(
+                id,
+                request.status()
+        );
+
+        var updated = commandService.updateStatus(command);
+
+        var  assessment = AssessmentResourceFromEntityAssembler.toResourceFromEntity(updated);
+
+        return Response
+                .status(Response.Status.OK)
                 .entity(assessment)
                 .build();
     }

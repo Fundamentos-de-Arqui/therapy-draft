@@ -64,4 +64,7 @@ public class AssessmentEntity {
     public AssessmentTypeEntity getType() { return this.type; }
     public AssessmentStatusEntity getStatus() { return this.status; }
     public ZonedDateTime getScheduledAt() { return this.scheduledAt; }
+    public void setId(Long id) { this.id = id; }
+    public void setTherapistId(Long id) { this.therapistId = id; }
+    public void setStatus(AssessmentStatusEntity status) { this.status = status; }
 }

@@ -48,7 +48,7 @@ public class AssessmentMapper{
 
         AssessmentId id = new  AssessmentId(entity.getId());
         PatientId patientId = new PatientId(entity.getPatientId());
-        TherapistId therapistId = new TherapistId(entity.getId());
+        TherapistId therapistId = new TherapistId(entity.getTherapistId());
         AssessmentType type = assessmentTypeMapper.toDomain(entity.getType());
         AssessmentStatus status = assessmentStatusMapper.toDomain(entity.getStatus());
         ZonedDateTime scheduledAt = entity.getScheduledAt();
@@ -63,4 +63,10 @@ public class AssessmentMapper{
                 scheduledAt
         );
     }
+
+    public void updateEntity(AssessmentEntity entity, Assessment domain) {
+        entity.setTherapistId(domain.getTherapistId().value());
+        entity.setStatus(assessmentStatusMapper.toEntity(domain.getStatus()));
+    }
+
 }
