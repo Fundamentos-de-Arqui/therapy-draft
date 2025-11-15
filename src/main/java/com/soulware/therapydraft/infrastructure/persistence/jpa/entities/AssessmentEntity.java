@@ -1,7 +1,5 @@
 package com.soulware.therapydraft.infrastructure.persistence.jpa.entities;
 
-import com.soulware.therapydraft.domain.model.valueobjects.AssessmentStatus;
-import com.soulware.therapydraft.domain.model.valueobjects.AssessmentType;
 import jakarta.persistence.*;
 
 import java.time.ZonedDateTime;
