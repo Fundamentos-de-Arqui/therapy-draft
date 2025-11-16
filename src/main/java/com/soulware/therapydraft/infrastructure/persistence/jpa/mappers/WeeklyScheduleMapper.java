@@ -29,7 +29,7 @@ public class WeeklyScheduleMapper{
                 return new WeeklySchedule(scheduleMap);
     }
 
-    public List<TherapyScheduleEntryEntity> toEntity(WeeklySchedule domain, Long planId) {
+    public List<TherapyScheduleEntryEntity> toEntity(WeeklySchedule domain) {
         if (domain == null || domain.schedule().isEmpty()) {
             return List.of();
         }
@@ -37,7 +37,6 @@ public class WeeklyScheduleMapper{
         return domain.schedule().entrySet().stream()
                 .map(entry -> {
                     TherapyScheduleEntryEntity entity = new TherapyScheduleEntryEntity();
-                    entity.setPlanId(planId);
                     entity.setDay(entry.getKey().name());
                     entity.setStartTime(entry.getValue().getStart());
                     entity.setEndTime(entry.getValue().getEnd());

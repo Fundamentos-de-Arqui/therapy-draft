@@ -30,7 +30,8 @@ public class TherapyPlanMapper {
                 domain.getTherapyPlanInformation().Goals(),
                 domain.getAssignedTherapistId().value(),
                 domain.getPatientId().value(),
-                domain.getLegalResponsibleId().value()
+                domain.getLegalResponsibleId().value(),
+                domain.getAssessmentId().value()
         );
     }
 

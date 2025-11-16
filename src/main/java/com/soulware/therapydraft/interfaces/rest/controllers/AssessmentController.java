@@ -3,8 +3,8 @@ package com.soulware.therapydraft.interfaces.rest.controllers;
 import com.soulware.therapydraft.application.commands.ChangeAssessmentStatusCommand;
 import com.soulware.therapydraft.application.commands.CreateAssessmentCommand;
 import com.soulware.therapydraft.application.queries.GetAssessmentsQuery;
-import com.soulware.therapydraft.application.services.AssessmentCommandService;
-import com.soulware.therapydraft.application.services.AssessmentQueryService;
+import com.soulware.therapydraft.application.services.commands.AssessmentCommandService;
+import com.soulware.therapydraft.application.services.queries.AssessmentQueryService;
 import com.soulware.therapydraft.interfaces.rest.assemblers.AssessmentResourceFromEntityAssembler;
 import com.soulware.therapydraft.interfaces.rest.resources.ChangeAssessmentStatusResource;
 import com.soulware.therapydraft.interfaces.rest.resources.CreateAssessmentResource;
@@ -14,8 +14,6 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-import java.time.ZonedDateTime;
 
 @Path("/assessments")
 @Produces(MediaType.APPLICATION_JSON)

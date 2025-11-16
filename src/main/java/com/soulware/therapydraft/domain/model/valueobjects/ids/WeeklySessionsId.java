@@ -23,4 +23,3 @@ public record WeeklySessionsId(Long value) implements DomainId {
     }
 
 }
-

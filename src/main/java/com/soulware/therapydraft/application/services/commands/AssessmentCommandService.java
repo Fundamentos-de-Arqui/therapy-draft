@@ -1,4 +1,4 @@
-package com.soulware.therapydraft.application.services;
+package com.soulware.therapydraft.application.services.commands;
 
 import com.soulware.therapydraft.application.commands.ChangeAssessmentStatusCommand;
 import com.soulware.therapydraft.application.commands.CreateAssessmentCommand;
@@ -10,7 +10,6 @@ import com.soulware.therapydraft.domain.model.valueobjects.ids.TherapistId;
 import com.soulware.therapydraft.domain.repositories.AssessmentRepository;
 import com.soulware.therapydraft.infrastructure.events.cdi.CdiEventPublisher;
 import com.soulware.therapydraft.infrastructure.messaging.senders.AssessmentMessageSender;
-import com.soulware.therapydraft.infrastructure.persistence.jpa.repositories.AssessmentStatusRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;

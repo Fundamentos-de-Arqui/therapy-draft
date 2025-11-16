@@ -28,6 +28,13 @@ public abstract class BaseAbstractAggregate implements Aggregate {
         this.eventPublisher = eventPublisher;
     }
 
+    protected BaseAbstractAggregate(DomainEventPublisher eventPublisher) {
+        Objects.requireNonNull(eventPublisher, "Domain Event Publisher cannot be null.");
+
+        this.id = null;
+        this.eventPublisher = eventPublisher;
+    }
+
     /**
      * {@inheritDoc}
      */

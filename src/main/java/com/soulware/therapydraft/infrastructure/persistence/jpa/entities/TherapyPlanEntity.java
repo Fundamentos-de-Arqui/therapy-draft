@@ -53,12 +53,13 @@ public class TherapyPlanEntity {
 
     protected TherapyPlanEntity() {}
 
-    public TherapyPlanEntity(String description, String goals, Long assignedTherapistId, Long patientId, Long legalResponsibleId) {
+    public TherapyPlanEntity(String description, String goals, Long assignedTherapistId, Long patientId, Long legalResponsibleId, Long assessmentId) {
         this.description = description;
         this.goals = goals;
         this.assignedTherapistId = assignedTherapistId;
         this.patientId = patientId;
         this.legalResponsibleId = legalResponsibleId;
+        this.assessmentId = assessmentId;
     }
 
     public Long getId() { return this.id; }
