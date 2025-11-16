@@ -4,6 +4,7 @@ import com.soulware.therapydraft.application.commands.CreateTherapyPlanCommand;
 import com.soulware.therapydraft.application.commands.ScheduleEntryCommand;
 import com.soulware.therapydraft.domain.model.aggregates.Assessment;
 import com.soulware.therapydraft.domain.model.aggregates.TherapyPlan;
+import com.soulware.therapydraft.domain.model.valueobjects.AssessmentStatus;
 import com.soulware.therapydraft.domain.model.valueobjects.TherapyPlanInformation;
 import com.soulware.therapydraft.domain.model.valueobjects.TimeSlot;
 import com.soulware.therapydraft.domain.model.valueobjects.WeeklySchedule;
@@ -19,6 +20,7 @@ import java.time.DayOfWeek;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -43,6 +45,7 @@ public class TherapyPlanCommandService {
         Assessment assessment = assessmentRepository.findById(new AssessmentId(command.assessmentId()))
                 .orElseThrow(() -> new RuntimeException("Assessment " + command.assessmentId() + " not found"));
 
+        checkIfIsValid(assessment);
 
         WeeklySchedule weeklySchedule = buildWeeklySchedule(command.schedule());
 
@@ -95,5 +98,16 @@ public class TherapyPlanCommandService {
                 .orElseThrow(() -> new RuntimeException("Therapy plan with assessment id " + assessmentId + " does not exist"));
 
         therapyPlanMessageSender.sendTherapyPlanDraft(therapyPlan);
+    }
+
+    private void checkIfIsValid(Assessment assessment) {
+        Assessment previousAssessment = assessmentRepository.findLastByPatientId(new PatientId(assessment.getPatientId().value()))
+                .orElse(null);
+        assert previousAssessment != null;
+        if (!Objects.equals(previousAssessment.getId().value(), assessment.getId().value()))
+            throw new IllegalArgumentException("Assessment with id " + assessment.getId().value() + " is not the last assessment of the patient with id " + assessment.getPatientId().value());
+        if (!assessment.getStatus().equals(AssessmentStatus.DONE)) {
+            throw new IllegalStateException("Cannot create new assessment. The last assessment (ID: " + previousAssessment.getId().value() + ") for patient " + " is currently active/pending (Status: " + previousAssessment.getStatus().name() + ").");
+        }
     }
 }
