@@ -14,6 +14,7 @@ public interface AssessmentRepository {
     void save(Assessment assessment);
     void update(Assessment assessment);
     List<Assessment> findByPatientId(PatientId patientId);
+    Optional<Assessment> findLastByPatientId(PatientId patientId);
     List<Assessment> findByTherapistId(TherapistId therapistId);
     PagedResult<Assessment> findByFilters(
             Long patientId,

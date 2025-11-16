@@ -91,6 +91,29 @@ public class JpaAssessmentRepository implements AssessmentRepository {
 
     @Override
     @Transactional(Transactional.TxType.SUPPORTS)
+    public Optional<Assessment> findLastByPatientId(PatientId patientId) {
+        if (patientId == null) {
+            return Optional.empty();
+        }
+        try {
+            AssessmentEntity lastEntity = entityManager.createQuery(
+                            "SELECT a FROM AssessmentEntity a " +
+                                    "WHERE a.patientId = :pid " +
+                                    "ORDER BY a.createdAt DESC",
+                            AssessmentEntity.class)
+                    .setParameter("pid", patientId.value())
+                    .setMaxResults(1)
+                    .getSingleResult();
+
+            return Optional.of(mapper.toDomain(lastEntity));
+
+        } catch (jakarta.persistence.NoResultException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    @Transactional(Transactional.TxType.SUPPORTS)
     public List<Assessment> findByTherapistId(TherapistId therapistId) {
         if (therapistId == null) return List.of();
 

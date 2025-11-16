@@ -27,6 +27,9 @@ public class AssessmentCommandService {
     CdiEventPublisher  eventPublisher;
 
     public Assessment create(CreateAssessmentCommand command) {
+
+        checkLastAssessment(command.patientId());
+
         Assessment assessment = Assessment.createInitial(
                 new AssessmentId(command.patientId()),
                 eventPublisher,
@@ -61,5 +64,13 @@ public class AssessmentCommandService {
             assessmentMessageSender.sendAssessmentDone(assessment);
 
         return assessment;
+    }
+
+    private void checkLastAssessment(Long patientId) {
+        Assessment previousAssessment = assessmentRepository.findLastByPatientId(new PatientId(patientId))
+                .orElse(null);
+        if (previousAssessment != null && !previousAssessment.getStatus().equals(AssessmentStatus.DONE)) {
+            throw new IllegalStateException("Cannot create new assessment. The last assessment (ID: " + previousAssessment.getId().value() + ") for patient " + patientId + " is currently active/pending (Status: " + previousAssessment.getStatus().name() + ").");
+        }
     }
 }
