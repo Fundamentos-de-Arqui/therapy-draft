@@ -1,25 +1,25 @@
 package com.soulware.therapydraft.infrastructure.messaging.senders;
 
 import com.soulware.therapydraft.domain.model.aggregates.Assessment;
+import com.soulware.therapydraft.domain.model.aggregates.TherapyPlan;
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
+import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
-
 @ApplicationScoped
-public class AssessmentMessageSender {
+public class TherapyPlanMessageSender {
     private static final Dotenv dotenv = Dotenv.load();
 
     private static final String BROKER_URL = dotenv.get("BROKER_URL");
-    private static final String QUEUE_NAME = dotenv.get("ASSESSMENT_QUEUE_NAME");
+    private static final String QUEUE_NAME = dotenv.get("THERAPY_PLAN_QUEUE_NAME");
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    public void sendAssessmentDone(Assessment assessment) {
+    public void sendTherapyPlanDraft(TherapyPlan  therapyPlan) {
         try {
             // Define connection parameters
             ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(
@@ -42,7 +42,7 @@ public class AssessmentMessageSender {
             MessageProducer producer = session.createProducer(queue);
 
             // Convert assessment to json
-            String json = jsonb.toJson(assessment);
+            String json = jsonb.toJson(therapyPlan);
 
             // Create message
             TextMessage message = session.createTextMessage(json);

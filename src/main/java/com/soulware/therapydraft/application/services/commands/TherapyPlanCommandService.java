@@ -11,6 +11,7 @@ import com.soulware.therapydraft.domain.model.valueobjects.ids.*;
 import com.soulware.therapydraft.domain.repositories.AssessmentRepository;
 import com.soulware.therapydraft.domain.repositories.TherapyPlanRepository;
 import com.soulware.therapydraft.infrastructure.events.cdi.CdiEventPublisher;
+import com.soulware.therapydraft.infrastructure.messaging.senders.TherapyPlanMessageSender;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -28,6 +29,9 @@ public class TherapyPlanCommandService {
 
     @Inject
     AssessmentRepository  assessmentRepository;
+
+    @Inject
+    TherapyPlanMessageSender  therapyPlanMessageSender;
 
     @Inject
     CdiEventPublisher eventPublisher;
@@ -58,6 +62,8 @@ public class TherapyPlanCommandService {
 
         therapyPlanRepository.save(therapyPlan);
 
+        sendMessage(new AssessmentId(assessment.getId().value()));
+
         return therapyPlan;
     }
 
@@ -82,5 +88,12 @@ public class TherapyPlanCommandService {
                 ));
 
         return new WeeklySchedule(scheduleMap);
+    }
+
+    private void sendMessage(AssessmentId assessmentId){
+        TherapyPlan therapyPlan = therapyPlanRepository.findByAssessmentId(assessmentId)
+                .orElseThrow(() -> new RuntimeException("Therapy plan with assessment id " + assessmentId + " does not exist"));
+
+        therapyPlanMessageSender.sendTherapyPlanDraft(therapyPlan);
     }
 }
