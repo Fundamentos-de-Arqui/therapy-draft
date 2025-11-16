@@ -2,11 +2,11 @@ package com.soulware.therapydraft.application.queries;
 
 import jakarta.validation.constraints.Null;
 
-public record GetAssessmentsQuery(
-        @Null Long patientId,
+public record GetTherapyPlansQuery(
+        @Null Long assessmentId,
         @Null Long therapistId,
-        @Null String status,
-        @Null String scheduledAt,
+        @Null Long patientId,
+        @Null Long legalResponsibleId,
         int page,
         int size
 ) {
