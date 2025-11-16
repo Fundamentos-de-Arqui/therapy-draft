@@ -1,6 +1,7 @@
 package com.soulware.therapydraft.infrastructure.persistence.jpa.repositories;
 
 import com.soulware.therapydraft.domain.model.aggregates.TherapyPlan;
+import com.soulware.therapydraft.domain.model.valueobjects.ids.AssessmentId;
 import com.soulware.therapydraft.domain.model.valueobjects.ids.PatientId;
 import com.soulware.therapydraft.domain.model.valueobjects.ids.TherapistId;
 import com.soulware.therapydraft.domain.model.valueobjects.ids.TherapyPlanId;
@@ -56,20 +57,35 @@ public class JpaTherapyPlanRepository implements TherapyPlanRepository {
 
     @Override
     @Transactional(Transactional.TxType.SUPPORTS)
-    public List<TherapyPlan> findByAssignedTherapistId(TherapistId therapistId) {
-        if (therapistId == null) {
-            return List.of();
+    public Optional<TherapyPlan> findByAssessmentId(AssessmentId assessmentId) {
+        if (assessmentId == null) {
+            return Optional.empty();
         }
 
-        List<TherapyPlanEntity> entities = entityManager.createQuery(
-                        "SELECT tp FROM TherapyPlanEntity tp WHERE tp.assignedTherapistId = :therapistId",
-                        TherapyPlanEntity.class)
-                .setParameter("therapistId", therapistId.value())
-                .getResultList();
+        try {
+            // 1. Obtener la consulta tipada
+            TherapyPlanEntity entity = entityManager.createQuery(
+                            "SELECT tp FROM TherapyPlanEntity tp WHERE tp.assessmentId = :assessmentId",
+                            TherapyPlanEntity.class)
+                    // 2. Establecer el parámetro
+                    .setParameter("assessmentId", assessmentId.value())
+                    // 3. Ejecutar y obtener el resultado único
+                    .getSingleResult();
 
-        return entities.stream()
-                .map(therapyPlanMapper::toDomain)
-                .collect(Collectors.toList());
+            // 4. Si se encuentra, mapear y retornar
+            return Optional.ofNullable(entity) // Aunque getSingleResult nunca es null, se mantiene la coherencia.
+                    .map(therapyPlanMapper::toDomain);
+
+        } catch (jakarta.persistence.NoResultException e) {
+            // 5. Si no se encuentra ninguna entidad, retornar Optional.empty()
+            return Optional.empty();
+        } catch (jakarta.persistence.NonUniqueResultException e) {
+            // 6. Manejar la excepción si el AssessmentId no es único
+            // Esto indica un error en la lógica o las restricciones de la DB/dominio.
+            // Se puede registrar y retornar Optional.empty() o lanzar una excepción de negocio.
+            System.err.println("Multiple therapy plans found for assessment ID: " + assessmentId.value());
+            return Optional.empty();
+        }
     }
 
     @Override

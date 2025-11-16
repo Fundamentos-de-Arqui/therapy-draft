@@ -33,8 +33,12 @@ public class TherapyPlanCommandService {
     CdiEventPublisher eventPublisher;
 
     public TherapyPlan create(CreateTherapyPlanCommand command){
+        if (therapyPlanRepository.findByAssessmentId(new AssessmentId(command.assessmentId())).isPresent())
+            throw new RuntimeException("Assessment with id " + command.assessmentId() + " already has a therapy plan");
+
         Assessment assessment = assessmentRepository.findById(new AssessmentId(command.assessmentId()))
                 .orElseThrow(() -> new RuntimeException("Assessment " + command.assessmentId() + " not found"));
+
 
         WeeklySchedule weeklySchedule = buildWeeklySchedule(command.schedule());
 
