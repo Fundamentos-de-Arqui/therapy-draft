@@ -47,7 +47,7 @@ public class TherapyPlanCommandService {
                         command.goals()
                 ),
                 new TherapistId(command.assignedTherapistId()),
-                new PatientId(command.patientId()),
+                assessment.getPatientId(),
                 new LegalResponsibleId(command.legalResponsibleId()),
                 new WeeklySchedule(weeklySchedule.schedule())
         );

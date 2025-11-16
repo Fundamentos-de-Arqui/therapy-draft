@@ -9,7 +9,6 @@ public record CreateTherapyPlanResource(
         String description,
         String goals,
         Long assignedTherapistId,
-        Long patientId,
         Long legalResponsibleId,
         List<ScheduleEntryCommand>  schedule
 ) {

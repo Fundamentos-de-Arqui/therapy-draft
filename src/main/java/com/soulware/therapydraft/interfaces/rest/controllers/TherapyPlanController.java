@@ -34,7 +34,6 @@ public class TherapyPlanController {
                 request.description(),
                 request.goals(),
                 request.assignedTherapistId(),
-                request.patientId(),
                 request.legalResponsibleId(),
                 request.schedule()
         );
