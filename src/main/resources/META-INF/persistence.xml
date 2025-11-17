@@ -10,8 +10,6 @@
 
         <class>com.soulware.therapydraft.domain.model.aggregates.Assessment</class>
         <class>com.soulware.therapydraft.domain.model.aggregates.TherapyPlan</class>
-        <class>com.soulware.therapydraft.domain.model.aggregates.WeeklySessions</class>
-        <class>com.soulware.therapydraft.domain.model.entities.Session</class>
 
         <properties>
             <!-- Hibernate/JPA -->

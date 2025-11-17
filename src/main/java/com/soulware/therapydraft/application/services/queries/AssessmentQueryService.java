@@ -22,6 +22,7 @@ public class AssessmentQueryService {
                 query.page(),
                 query.size()
         );
+
     }
 
 }
