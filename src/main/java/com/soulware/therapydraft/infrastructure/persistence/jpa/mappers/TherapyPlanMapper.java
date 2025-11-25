@@ -5,9 +5,12 @@ import com.soulware.therapydraft.domain.model.valueobjects.TherapyPlanInformatio
 import com.soulware.therapydraft.domain.model.valueobjects.WeeklySchedule;
 import com.soulware.therapydraft.domain.model.valueobjects.ids.*;
 import com.soulware.therapydraft.infrastructure.persistence.jpa.entities.TherapyPlanEntity;
+import com.soulware.therapydraft.infrastructure.persistence.jpa.entities.TherapyScheduleEntryEntity;
 import com.soulware.therapydraft.shared.domain.model.events.DomainEventPublisher;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+
+import java.util.List;
 
 @ApplicationScoped
 public class TherapyPlanMapper {
@@ -20,12 +23,10 @@ public class TherapyPlanMapper {
     @Inject
     public TherapyPlanMapper() {}
 
-    public TherapyPlanEntity toEntity(TherapyPlan domain){
-        if (domain == null){
-            return null;
-        }
+    public TherapyPlanEntity toEntity(TherapyPlan domain) {
+        if (domain == null) return null;
 
-        return new TherapyPlanEntity(
+        TherapyPlanEntity entity = new TherapyPlanEntity(
                 domain.getTherapyPlanInformation().Description(),
                 domain.getTherapyPlanInformation().Goals(),
                 domain.getAssignedTherapistId().value(),
@@ -33,7 +34,14 @@ public class TherapyPlanMapper {
                 domain.getLegalResponsibleId().value(),
                 domain.getAssessmentId().value()
         );
+
+        List<TherapyScheduleEntryEntity> scheduleEntities = weeklyScheduleMapper.toEntity(domain.getSchedule());
+        scheduleEntities.forEach(entry -> entry.setPlan(entity)); // ⚡ Aquí asignas la referencia al objeto padre
+        entity.getWeeklySchedule().addAll(scheduleEntities);
+
+        return entity;
     }
+
 
     public TherapyPlan toDomain(TherapyPlanEntity entity){
         if (entity == null){

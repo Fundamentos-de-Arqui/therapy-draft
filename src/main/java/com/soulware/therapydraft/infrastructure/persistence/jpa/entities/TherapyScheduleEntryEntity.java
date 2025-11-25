@@ -11,8 +11,9 @@ public class TherapyScheduleEntryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long entryId;
 
-    @Column(name = "plan_id", nullable = false)
-    private Long planId;
+    @ManyToOne
+    @JoinColumn(name = "plan_id", nullable = false)
+    private TherapyPlanEntity plan;
 
     @Column(name = "schedule_day", nullable = false, length = 10)
     private String day;
@@ -44,8 +45,8 @@ public class TherapyScheduleEntryEntity {
 
     public Long getEntryId() { return entryId; }
     public void setEntryId(Long entryId) { this.entryId = entryId; }
-    public Long getPlanId() { return planId; }
-    public void setPlanId(Long planId) { this.planId = planId; }
+    public void setPlan(TherapyPlanEntity plan) { this.plan = plan; }
+    public TherapyPlanEntity getPlan() { return this.plan; }
     public String getDay() { return day; }
     public void setDay(String day) { this.day = day; }
     public ZonedDateTime getStartTime() { return startTime; }

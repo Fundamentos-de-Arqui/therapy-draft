@@ -3,6 +3,7 @@ package com.soulware.therapydraft.infrastructure.persistence.jpa.entities;
 import jakarta.persistence.*;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,9 +31,9 @@ public class TherapyPlanEntity {
     @Column(name = "legal_responsible_id", nullable = false)
     private Long legalResponsibleId;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "therapy_plan_id")
-    private List<TherapyScheduleEntryEntity> scheduleEntries;
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<TherapyScheduleEntryEntity> weeklySchedule = new ArrayList<>();
+
 
     @Column(name = "created_at", updatable = false, nullable = false)
     private ZonedDateTime createdAt;
@@ -69,6 +70,5 @@ public class TherapyPlanEntity {
     public Long getAssignedTherapistId() { return this.assignedTherapistId; }
     public Long getPatientId() { return this.patientId; }
     public Long getLegalResponsibleId() { return this.legalResponsibleId; }
-    public List<TherapyScheduleEntryEntity> getWeeklySchedule() { return scheduleEntries; }
-
+    public  List<TherapyScheduleEntryEntity> getWeeklySchedule() { return this.weeklySchedule; }
 }

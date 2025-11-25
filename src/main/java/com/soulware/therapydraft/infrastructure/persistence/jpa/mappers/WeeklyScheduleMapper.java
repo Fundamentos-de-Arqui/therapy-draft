@@ -30,9 +30,7 @@ public class WeeklyScheduleMapper{
     }
 
     public List<TherapyScheduleEntryEntity> toEntity(WeeklySchedule domain) {
-        if (domain == null || domain.schedule().isEmpty()) {
-            return List.of();
-        }
+        if (domain == null || domain.schedule().isEmpty()) return List.of();
 
         return domain.schedule().entrySet().stream()
                 .map(entry -> {
@@ -40,9 +38,9 @@ public class WeeklyScheduleMapper{
                     entity.setDay(entry.getKey().name());
                     entity.setStartTime(entry.getValue().getStart());
                     entity.setEndTime(entry.getValue().getEnd());
-
                     return entity;
                 })
                 .collect(Collectors.toList());
     }
+
 }
