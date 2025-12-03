@@ -57,6 +57,12 @@
             <artifactId>java-dotenv</artifactId>
             <version>5.2.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.microprofile.health</groupId>
+            <artifactId>microprofile-health-api</artifactId>
+            <version>4.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
